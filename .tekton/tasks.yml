@@ -28,6 +28,7 @@ spec:
         fi
 
 ---
+---
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -44,12 +45,11 @@ spec:
     - name: flake8
       image: python:3.9-slim
       workingDir: $(workspaces.source.path)
-      args: ["$(params.args[*])"]
       script: |
         #!/bin/bash
         set -e
         pip install flake8
-        flake8 $(params.args[*])
+        flake8 --count --max-complexity=10 --max-line-length=127 service
 
 ---
 apiVersion: tekton.dev/v1beta1
