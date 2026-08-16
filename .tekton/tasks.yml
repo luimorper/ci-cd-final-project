@@ -38,17 +38,18 @@ spec:
   params:
     - name: args
       description: Arguments to pass to flake8
-      type: string
-      default: ""
+      type: array
+      default: ["--count", "--max-complexity=10", "--max-line-length=127"]
   steps:
     - name: flake8
       image: python:3.9-slim
       workingDir: $(workspaces.source.path)
+      args: ["$(params.args[*])"]
       script: |
         #!/bin/bash
         set -e
         pip install flake8
-        flake8 $(params.args)
+        flake8 $(params.args[*])
 
 ---
 apiVersion: tekton.dev/v1beta1
